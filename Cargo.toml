@@ -1,0 +1,26 @@
+[package]
+name = "cvss"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# ciborium = "0.2.1"
+# cvssrust = "0.1.1
+cvss_tools = "0.1.1"
+cvssrust = "1.0.1"
+wasm-minimal-protocol = { git = "https://github.com/astrale-sharp/wasm-minimal-protocol.git", version = "0.1.0" }
+
+[profile.dev]
+lto = 'thin'        # Enable link-time optimization
+opt-level = 'z'     # Optimize for size
+panic = 'abort'     # Abort on panic
+
+[profile.release]
+lto = true          # Enable link-time optimization
+strip = true        # Strip symbols from binary*
+opt-level = 'z'     # Optimize for size
+codegen-units = 1   # Reduce number of codegen units to increase optimizations
+panic = 'abort'     # Abort on panic
