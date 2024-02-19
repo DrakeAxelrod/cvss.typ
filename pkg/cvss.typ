@@ -40,8 +40,9 @@
     let v = "[\/]?(V\:[X|D|C])?"
     let re = "[\/]?(V\:[X|L|M|H])?"
     let u = "[\/]?(U\:[X|Clear|Green|Amber|Red])?"
+    let metric = "[\/]([A-Z]{1,3})\:"
     // regex("CVSS\:4\.0[\/]?(AV\:[N|A|L|P])?[\/](AC\:[L|H])")
-    regex(header + av + ac + at + pr + ui + vc + vi + va + sc + si + sa + s + au + r + v + re + u)
+    regex(header + metric)
   }
 )
 #let cvss31 = (
@@ -57,15 +58,20 @@
 #let verify(
   // re,
   vector,
-) = (
+) = {
   // if vector.starts_with("CVSS:4.0") {
   //   let re = cvss40.re;
   //   re.match(vector)
   // }
+  vector = upper(vector)
+            .replace("CLEAR", "Clear")
+            .replace("GREEN", "Green")
+            .replace("AMBER", "Amber")
+            .replace("RED", "Red")
   if vector.starts-with("CVSS:4.0") {
     let re = cvss40.re;
     vector.matches(re)
   }
-)
+}
 
-#verify("CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N")
+#verify("CVSS:4.0/AV:None/AC:H/AT:P/PR:H/UI:A/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N")
